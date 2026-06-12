@@ -1,6 +1,3 @@
-#requirements
-
-Plaintext
-
+streamlit
 pandas
 plotly
