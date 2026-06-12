@@ -12,7 +12,7 @@ st.title("🎫 Sistema de Controle de Chamados")
 ARQUIVO_DADOS = "dados_chamados.csv"
 
 # Lista de setores e problemas padronizados para o formulário e gráficos
-SETORES = ["TI", "Comunicação", "Secretaria FCN", "Secretaria ICN","Tesouraria", "ADM FCN", "ADM ICN","RH", "Infraestrutura", "CPA", "Cordenações FCN", "Cordenações ICN", "Diretoria", "Núcleos", "Biblioteca", "Central de Cópias"]
+SETORES = ["TI", "Comunicação", "Secretaria FCN", "Secretaria ICN", "Tesouraria", "ADM FCN", "ADM ICN", "RH", "Infraestrutura", "CPA", "Cordenações FCN", "Cordenações ICN", "Diretoria", "Núcleos", "Biblioteca", "Central de Cópias", "Prof. ICN", "Prof.FCN"]
 PROBLEMAS = ["Acesso ao Sistema", "Internet / Rede", "Hardware (Mouse, Teclado, Monitor)", "Impressora", "Instalação de Software", "E-mail", "Outros"]
 
 # Função para carregar os dados salvos
