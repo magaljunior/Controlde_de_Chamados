@@ -1,7 +1,6 @@
 #requirements
 
-Plaintext
 streamlit
 pandas
 plotly
-requests
+
