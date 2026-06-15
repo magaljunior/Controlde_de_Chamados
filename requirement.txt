@@ -1,5 +1,0 @@
-#requirements
-
-streamlit
-pandas
-plotly
