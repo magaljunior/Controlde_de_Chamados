@@ -8,7 +8,7 @@ st.set_page_config(page_title="Controle de Chamados", layout="wide")
 st.title("🎫 SIG Chamados & Tickets")
 
 # LINK DA SUA PLANILHA DO GOOGLE (Certifique-se de colocar o seu link aqui)
-URL_PLANILHA = "https://docs.google.com/spreadsheets/d/1W9ghF4R3oY8VC3NtXUuH_yiREwE7Q7cV7CKlP9jLJhs/edit?usp=sharing"
+URL_PLANILHA = "https://docs.google.com/spreadsheets/d/1W9ghF4R3oY8VC3NtXUuH_yiREwE7Q7cV7CKlP9jLJhs/edit?gid=0#gid=0"
 
 # Lista de setores e problemas padronizados
 SETORES = ["TI", "ADM FCN", "ADM ICN", "Biblioteca", "Central de Cópias", "Comunicação", "CPA", "Coordenações FCN", "Coordenações ICN", "Diretoria", "Eng. Elétrica", "Infraestrutura",  "Núcleos", "Prof. FCN", "Prof. Icn",  "Núcleos", "RH", "Secretaria FCN", "Secretaria ICN", "Tesouraria"]
