@@ -5,7 +5,7 @@ from datetime import datetime
 
 # Configuração da página do Streamlit
 st.set_page_config(page_title="Controle de Chamados", layout="wide")
-st.title("🎫 Sistema de Controle de Chamados & Tickets")
+st.title("🎫 SIG Chamados & Tickets")
 
 # LINK DA SUA PLANILHA DO GOOGLE (Certifique-se de colocar o seu link aqui)
 URL_PLANILHA = "https://docs.google.com/spreadsheets/d/1W9ghF4R3oY8VC3NtXUuH_yiREwE7Q7cV7CKlP9jLJhs/edit?usp=sharing"
