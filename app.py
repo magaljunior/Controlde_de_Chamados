@@ -12,7 +12,7 @@ st.title("🎫 Sistema de Controle de Chamados & Tickets")
 URL_PLANILHA = "https://docs.google.com/spreadsheets/d/1W9ghF4R3oY8VC3NtXUuH_yiREwE7Q7cV7CKlP9jLJhs/edit?usp=sharing"
 
 # Lista de setores e problemas padronizados
-SETORES = ["TI", "Comunicação", "Secretaria FCN", "Secretaria ICN","Tesouraria", "ADM FCN", "ADM ICN","RH", "Infraestrutura", "CPA", "Cordenações FCN", "Cordenações ICN", "Diretoria", "Núcleos", "Biblioteca", "Central de Cópias"]
+SETORES = ["TI", "ADM FCN", "ADM ICN", "Biblioteca", "Central de Cópias", "Comunicação", "CPA", "Cordenações FCN", "Cordenações ICN", "Diretoria", "Eng. Elétrica", "Infraestrutura",  "Núcleos", "Prof. FCN", "Prof. Icn",  "Núcleos", "RH", "Secretaria FCN", "Secretaria ICN", "Tesouraria"]
 PROBLEMAS = ["Acesso ao Sistema", "Internet / Rede", "Hardware (Mouse, Teclado, Monitor)", "Impressora", "Instalação de Software", "E-mail", "Outros"]
 
 # Tratamento do link para garantir leitura e escrita via API básica do Google
