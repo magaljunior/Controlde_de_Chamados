@@ -9,7 +9,8 @@ st.set_page_config(page_title="Controle de Chamados", layout="wide")
 st.title("🎫 SIG Chamados & Tickets")
 
 # Lista de setores e problemas padronizados
-SETORES = ["TI", "ADM FCN", "ADM ICN", "Biblioteca", "Central de Cópias", "Comunicação", "CPA", "Coordenações FCN", "Coordenações ICN", "Diretoria", "Eng. Elétrica", "Infraestrutura",  "Núcleos", "Prof. FCN", "Prof. Icn",  "Núcleos", "RH", "Secretaria FCN", "Secretaria ICN", "Tesouraria"]PROBLEMAS = ["Acesso ao Sistema", "Internet / Rede", "Hardware (Mouse, Teclado, Monitor)", "Impressora", "Instalação de Software", "E-mail", "Outros"]
+SETORES = ["TI", "ADM FCN", "ADM ICN", "Biblioteca", "Central de Cópias", "Comunicação", "CPA", "Coordenações FCN", "Coordenações ICN", "Diretoria", "Eng. Elétrica", "Infraestrutura",  "Núcleos", "Prof. FCN", "Prof. Icn",  "Núcleos", "RH", "Secretaria FCN", "Secretaria ICN", "Tesouraria"]
+PROBLEMAS = ["Acesso ao Sistema", "Internet / Rede", "Hardware (Mouse, Teclado, Monitor)", "Impressora", "Instalação de Software", "E-mail", "Outros"]
 COLUNAS_PADRAO = ["ID Ticket", "Data de Abertura", "Solicitante", "Setor Solicitante", "Categoria Problema", "Descrição", "Atendente", "Setor Atendente", "Status", "Data de Resolução"]
 
 # Conexão Nativa do Streamlit com o Google Sheets
