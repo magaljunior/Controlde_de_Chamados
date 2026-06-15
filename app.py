@@ -9,7 +9,7 @@ st.set_page_config(page_title="Controle de Chamados", layout="wide")
 st.title("🎫 Sistema de Controle de Chamados & Tickets")
 
 # LINK DA SUA PLANILHA DO GOOGLE (Substitua pelo seu link real)
-URL_PLANILHA = "COLE_AQUI_O_LINK_DA_SUA_PLANILHA_DO_GOOGLE"
+URL_PLANILHA = "https://docs.google.com/spreadsheets/d/1W9ghF4R3oY8VC3NtXUuH_yiREwE7Q7cV7CKlP9jLJhs/edit?usp=sharing"
 
 # Lista de setores e problemas padronizados
 SETORES = ["TI", "Comunicação", "Secretaria FCN", "Secretaria ICN","Tesouraria", "ADM FCN", "ADM ICN","RH", "Infraestrutura", "CPA", "Cordenações FCN", "Cordenações ICN", "Diretoria", "Núcleos", "Biblioteca", "Central de Cópias"]
