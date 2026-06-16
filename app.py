@@ -6,12 +6,12 @@ from supabase import create_client, Client
 
 # Configuração da página do Streamlit
 st.set_page_config(page_title="Controle de Chamados", layout="wide")
-st.title("🎫 Sistema de Controle de Chamados & Tickets (Banco de Dados Cloud)")
+st.title("🎫 SIG Chamados & Tickets (Banco de Dados Cloud)")
 
 # Inicialização segura das credenciais do Supabase através do st.secrets
 try:
-    SUPABASE_URL = st.secrets["SUPABASE_URL"]
-    SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
+    SUPABASE_URL = st.secrets["https://ctdrpmwwrnjofkoptpsv.supabase.co"]
+    SUPABASE_KEY = st.secrets["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZHJwbXd3cm5qb2Zrb3B0cHN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NjIzMDQsImV4cCI6MjA5NzEzODMwNH0.4CAkbe-LFbh4d5PwJmsYWSIkd5I2I2b3FTral7mjRCc"]
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 except Exception:
     st.error("Erro: Credenciais do Supabase não configuradas nos Secrets do Streamlit.")
