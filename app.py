@@ -6,7 +6,7 @@ from supabase import create_client, Client
 
 # Configuração da página do Streamlit
 st.set_page_config(page_title="Controle de Chamados", layout="wide")
-st.title("🎫 Sistema de Controle de Chamados & Tickets")
+st.title("🎫 SIG de Chamados & Tickets")
 
 # Inicialização segura das credenciais do Supabase
 try:
