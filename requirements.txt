@@ -1,6 +1,6 @@
 Plaintext
 
 streamlit
-pandas
 plotly
-supabase
+pandas==2.2.2
+supabase==2.4.0
