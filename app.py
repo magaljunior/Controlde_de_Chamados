@@ -2,44 +2,44 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from datetime import datetime
-import urllib.parse
+from supabase import create_client, Client
 
 # Configuração da página do Streamlit
 st.set_page_config(page_title="Controle de Chamados", layout="wide")
-st.title("🎫 SIG Chamados & Tickets")
+st.title("🎫 Sistema de Controle de Chamados & Tickets (Banco de Dados Cloud)")
 
-# LINK DA SUA PLANILHA DO GOOGLE (Cole o link completo da sua planilha aqui)
-URL_PLANILHA = "https://docs.google.com/spreadsheets/d/1iYHbKKbFhZJ57FdHz9eHQdRvIVt9Y69SoHddZCkTcCQ/edit?gid=0#gid=0"
+# Inicialização segura das credenciais do Supabase através do st.secrets
+try:
+    SUPABASE_URL = st.secrets["SUPABASE_URL"]
+    SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+except Exception:
+    st.error("Erro: Credenciais do Supabase não configuradas nos Secrets do Streamlit.")
+    st.stop()
 
-# Lista de setores e problemas padronizados (Corrigido o erro de sintaxe anterior)
+# Lista de setores e problemas padronizados
 SETORES = ["TI", "ADM FCN", "ADM ICN", "Biblioteca", "Central de Cópias", "Comunicação", "CPA", "Coordenações FCN", "Coordenações ICN", "Diretoria", "Eng. Elétrica", "Infraestrutura", "Núcleos", "Prof. FCN", "Prof. Icn", "RH", "Secretaria FCN", "Secretaria ICN", "Tesouraria"]
 PROBLEMAS = ["Acesso ao Sistema", "Internet / Rede", "Hardware (Mouse, Teclado, Monitor)", "Impressora", "Instalação de Software", "E-mail", "Outros"]
-COLUNAS_PADRAO = ["ID Ticket", "Data de Abertura", "Solicitante", "Setor Solicitante", "Categoria Problema", "Descrição", "Atendente", "Setor Atendente", "Status", "Data de Resolução"]
 
-# Conversão do link para formato de exportação CSV nativo (Ignora travas de bibliotecas)
-def obter_url_csv(url):
-    if "docs.google.com/spreadsheets/d/" in url:
-        id_planilha = url.split("/d/")[1].split("/")[0]
-        return f"https://docs.google.com/spreadsheets/d/{id_planilha}/export?format=csv"
-    return ""
-
-# Função estável de leitura de dados
+# Função para carregar os dados diretamente do banco de dados na nuvem
 def carregar_dados():
-    url_csv = obter_url_csv(URL_PLANILHA)
-    if url_csv:
-        try:
-            # ttl="0" simulado limpando o cache do pandas nativamente
-            df = pd.read_csv(url_csv, keep_default_na=False)
-            if df.empty or "ID Ticket" not in df.columns:
-                return pd.DataFrame(columns=COLUNAS_PADRAO)
-            df['ID Ticket'] = df['ID Ticket'].astype(str)
-            return df
-        except Exception:
-            return pd.DataFrame(columns=COLUNAS_PADRAO)
-    return pd.DataFrame(columns=COLUNAS_PADRAO)
+    try:
+        # Busca todas as linhas da tabela 'chamados' ordenadas pela data de abertura
+        resposta = supabase.table("chamados").select("*").execute()
+        if not resposta.data:
+            return pd.DataFrame(columns=["ID Ticket", "Data de Abertura", "Solicitante", "Setor Solicitante", "Categoria Problema", "Descrição", "Atendente", "Setor Atendente", "Status", "Data de Resolução"])
+        
+        # Converte o retorno para DataFrame e renomeia para manter o padrão visual
+        df_banco = pd.DataFrame(resposta.data)
+        df_banco.columns = ["ID Ticket", "Data de Abertura", "Solicitante", "Setor Solicitante", "Categoria Problema", "Descrição", "Atendente", "Setor Atendente", "Status", "Data de Resolução"]
+        df_banco['ID Ticket'] = df_banco['ID Ticket'].astype(str)
+        return df_banco
+    except Exception as e:
+        st.error(f"Erro ao ler banco de dados: {e}")
+        return pd.DataFrame()
 
-# Inicializa ou recarrega os dados na sessão do Streamlit
-if 'df_chamados' not in st.session_state or st.sidebar.button("🔄 Atualizar Banco de Dados"):
+# Mantém os dados sincronizados na sessão
+if 'df_chamados' not in st.session_state:
     st.session_state.df_chamados = carregar_dados()
 
 df = st.session_state.df_chamados
@@ -76,38 +76,35 @@ with aba_cadastro:
         
         if botao_salvar:
             if id_ticket and solicitante and descricao and atendente:
-                if id_ticket in df["ID Ticket"].values:
-                    st.error(f"O ID Ticket #{id_ticket} já existe!")
+                if not df.empty and id_ticket in df["ID Ticket"].values:
+                    st.error(f"O ID Ticket #{id_ticket} já existe no banco de dados!")
                 else:
-                    novo_ticket = {
-                        "ID Ticket": str(id_ticket),
-                        "Data de Abertura": str(data_abertura),
-                        "Solicitante": solicitante,
-                        "Setor Solicitante": setor_solicitante,
-                        "Categoria Problema": categoria,
-                        "Descrição": descricao,
-                        "Atendente": atendente,
-                        "Setor Atendente": setor_atendente,
-                        "Status": status,
-                        "Data de Resolução": str(data_resolucao) if status == "Resolvido" else "Pendente"
+                    # Formata os dados no padrão do banco SQL (nomes das colunas idênticos ao SQL)
+                    novo_registro = {
+                        "id_ticket": str(id_ticket),
+                        "data_abertura": str(data_abertura),
+                        "solicitante": solicitante,
+                        "setor_solicitante": setor_solicitante,
+                        "categoria_problema": categoria,
+                        "descricao": descricao,
+                        "atendente": atendente,
+                        "setor_atendente": setor_atendente,
+                        "status": status,
+                        "data_resolucao": str(data_resolucao)
                     }
+                    # Insere permanentemente no banco online
+                    supabase.table("chamados").insert(novo_registro).execute()
+                    st.success(f"Ticket #{id_ticket} gravado permanentemente na nuvem!")
                     
-                    # Atualiza em tempo real na tela do usuário
-                    st.session_state.df_chamados = pd.concat([df, pd.DataFrame([novo_ticket])], ignore_index=True)
-                    
-                    st.success(f"Ticket #{id_ticket} processado com sucesso!")
-                    st.warning("⚠️ Nota: Para persistência definitiva na nuvem gratuita, use o download do CSV abaixo para atualizar sua planilha oficial se o app reiniciar.")
+                    # Força a atualização dos dados na tela
+                    st.session_state.df_chamados = carregar_dados()
                     st.rerun()
             else:
                 st.error("Por favor, preencha todos os campos obrigatórios.")
 
     st.write("---")
     st.header("Todos os Chamados Registrados")
-    st.dataframe(st.session_state.df_chamados, use_container_width=True)
-    
-    # Botão de segurança para você nunca perder seu trabalho
-    csv_backup = st.session_state.df_chamados.to_csv(index=False).encode('utf-8')
-    st.download_button("📥 Baixar Backup dos Dados (Excel/CSV)", csv_backup, "backup_chamados.csv", "text/csv")
+    st.dataframe(df, use_container_width=True)
 
 # -------------------------------------------------------------------------
 # ABA 2: PESQUISAR E EDITAR
@@ -137,11 +134,14 @@ with aba_pesquisa:
                 nova_data_res = str(st.date_input("Nova Data Resolução", datetime.today().date())) if novo_status == "Resolvido" else "Pendente"
                 
                 if st.form_submit_button("Confirmar Atualização"):
-                    idx_original = df[df["ID Ticket"] == id_para_editar].index[0]
-                    df.at[idx_original, "Status"] = novo_status
-                    df.at[idx_original, "Data de Resolução"] = nova_data_res
-                    st.session_state.df_chamados = df
-                    st.success("Ticket atualizado temporariamente na sessão!")
+                    # Faz o UPDATE direto na linha correspondente no Supabase
+                    supabase.table("chamados").update({
+                        "status": novo_status,
+                        "data_resolucao": nova_data_res
+                    }).eq("id_ticket", id_para_editar).execute()
+                    
+                    st.success("Ticket atualizado com sucesso no banco de dados!")
+                    st.session_state.df_chamados = carregar_dados()
                     st.rerun()
 
 # -------------------------------------------------------------------------
