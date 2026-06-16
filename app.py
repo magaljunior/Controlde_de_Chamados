@@ -6,7 +6,7 @@ import urllib.parse
 
 # Configuração da página do Streamlit
 st.set_page_config(page_title="Controle de Chamados", layout="wide")
-st.title("🎫 Sistema de Controle de Chamados & Tickets")
+st.title("🎫 SIG Chamados & Tickets")
 
 # LINK DA SUA PLANILHA DO GOOGLE (Cole o link completo da sua planilha aqui)
 URL_PLANILHA = "https://docs.google.com/spreadsheets/d/1iYHbKKbFhZJ57FdHz9eHQdRvIVt9Y69SoHddZCkTcCQ/edit?gid=0#gid=0"
